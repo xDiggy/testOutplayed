@@ -1,9 +1,12 @@
-import { auth } from "$lib/auth";
+import { mongo } from "$lib/auth/mongo";
 import { AUTH_TOKEN_EXPIRY_SECONDS } from "$lib/constants.server";
 import { invalid, redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 
+import { verify_email, verify_password, verify_username } from "$lib/auth/mongo";
+
 import { MONGO_URL } from "$env/static/private";
+import { invalid_attribute_name_character } from "svelte/internal";
 
 export const actions: Actions = {
 	async default(event) {
@@ -16,34 +19,39 @@ export const actions: Actions = {
 
 		console.log(username, email, password);
 
-		return;
+		// return;
 
-		if (!email)
-			return invalid(422, { email, error: "An email address is required." });
-		if (!password)
-			return invalid(422, { email, error: "A password is required." });
-		if (password.length < 8)
+		console.log(await verify_username(username));
+
+		const user_res = await verify_username(username);
+		const email_res = await verify_email(email);
+		const password_res = verify_password(password);
+
+		if (user_res !== "ok") {
+			return invalid(422, { username, error: user_res });
+		}
+		if (email_res !== "ok") {
+			return invalid(422, { email, error: email_res });
+		}
+		if (password_res != "ok") {
+			return invalid(422, { password, error: password_res });
+		}
+		if (password !== password_confirm){
 			return invalid(422, {
-				email,
-				error: "Password must be at least 8 characters long.",
-			});
-		if (password.length > 32)
-			return invalid(422, {
-				email,
-				error: "Password cannot be more than 32 characters long.",
-			});
-		if (password !== password_confirm)
-			return invalid(422, {
-				email,
+				password_confirm,
 				error: "Your passwords must match.",
 			});
+		}
 
-		const signup_resp = await auth.signup({
+		const signup_resp = await mongo.signup({
+			username,
 			email,
 			password,
 			password_confirm,
 			opts: { cookies: event.cookies },
 		});
+
+		return;
 
 		if (signup_resp.isErr()) {
 			const error = (
@@ -54,7 +62,7 @@ export const actions: Actions = {
 		}
 
 		// Sign the user in immediately
-		const login_resp = await auth.login({
+		const login_resp = await mongo.login({
 			email,
 			password,
 			opts: { cookies: event.cookies },

@@ -28,6 +28,7 @@ interface AuthAdapter {
 		opts?: any;
 	}): Promise<AuthResponse>;
 	signup(props: {
+		username: string;
 		email: string;
 		password: string;
 		password_confirm: string;

@@ -36,6 +36,7 @@
 				}
 			}}
 	>
+		<!-- This is erroring but it still works ?? -->
 		{#if form?.error}
 			<div class="alert alert-error">
 				<div>

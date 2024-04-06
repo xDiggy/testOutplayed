@@ -6,7 +6,7 @@ const log = debug("app:lib:auth:pocketbase");
 
 const POCKETBASE_API_URL = "http://127.0.0.1:8090/api";
 
-export const pocketbase: AuthAdapter = {
+const pocketbase: AuthAdapter = {
 	async login({ email, password }) {
 		// TODO: add Zod
 		const resp = await pocketbase_request<LoginResponse>({
