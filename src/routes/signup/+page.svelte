@@ -46,12 +46,20 @@
 		{/if}
 		<p>
 			<input
+				type="username"
+				name="username"
+				placeholder="Username..."
+				class="input input-bordered w-full"
+				required
+			/>
+		</p>
+		<p>
+			<input
 				type="email"
 				name="email"
 				placeholder="Email..."
 				class="input input-bordered w-full"
 				required
-				value={form?.email ?? ""}
 			/>
 		</p>
 		<p>

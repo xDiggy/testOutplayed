@@ -2,6 +2,12 @@ import { auth } from "$lib/auth";
 import type { Handle } from "@sveltejs/kit";
 import debug from "debug";
 
+import {start_mongo} from "./db/mongo";
+
+start_mongo().then(() => {
+	console.log('Mongo client started.');
+});
+
 const log = debug("app:hooks.server");
 
 export const handle: Handle = async ({ event, resolve }) => {

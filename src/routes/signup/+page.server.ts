@@ -3,12 +3,20 @@ import { AUTH_TOKEN_EXPIRY_SECONDS } from "$lib/constants.server";
 import { invalid, redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 
+import { MONGO_URL } from "$env/static/private";
+
 export const actions: Actions = {
 	async default(event) {
 		const data = await event.request.formData();
 		const email = data.get("email") as string;
 		const password = data.get("password") as string;
 		const password_confirm = data.get("password-confirm") as string;
+
+		const username = data.get("username") as string;
+
+		console.log(username, email, password);
+
+		return;
 
 		if (!email)
 			return invalid(422, { email, error: "An email address is required." });

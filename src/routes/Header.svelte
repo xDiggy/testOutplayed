@@ -55,13 +55,14 @@
 		</h1>
 
 		<nav class="dropdown dropdown-end ml-auto">
-			<label tabindex="0" class="btn btn-ghost gap-3">
+			<label for="menu-toggle" tabindex="0" class="btn btn-ghost gap-3">
 				<Fa icon={faBars} />
 				Menu
 			</label>
 			<ul
+				id="menu-toggle"
 				tabindex="0"
-				class="dropdown-content menu p-2 shadow-md bg-base-200 rounded-box w-52 "
+				class="dropdown-content menu p-2 shadow-md bg-base-200 rounded-box w-52"
 			>
 				{#each menu_items as item}
 					<li>
