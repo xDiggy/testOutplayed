@@ -22,7 +22,7 @@ type AuthResponse = Result<User>;
 
 interface AuthAdapter {
 	login(props: {
-		email: string;
+		username: string;
 		password: string;
 		// TEMPORARY
 		opts?: any;

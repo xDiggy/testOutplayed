@@ -50,14 +50,11 @@
 		{/if}
 		<p>
 			<input
-				autocomplete="email"
-				autocorrect="off"
-				type="email"
-				name="email"
-				placeholder="Email..."
+				type="username"
+				name="username"
+				placeholder="Username..."
 				class="input input-bordered w-full"
 				required
-				value={form?.email ?? ""}
 			/>
 		</p>
 		<p>

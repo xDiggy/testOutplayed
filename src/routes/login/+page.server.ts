@@ -3,6 +3,7 @@ import { AUTH_TOKEN_EXPIRY_SECONDS } from "$lib/constants.server";
 import { invalid, redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
 import debug from "debug";
+import { mongo } from "$lib/auth/mongo";
 
 const log = debug("app:routes:login:page.server");
 
@@ -11,12 +12,14 @@ export const actions: Actions = {
 		const data = await event.request.formData();
 		const email = data.get("email") as string;
 		const password = data.get("password") as string;
+		const username = data.get("username") as string;
 
-		const resp = await auth.login({
-			email,
+		const resp = await mongo.login({
+			username,
 			password,
 			opts: { cookies: event.cookies },
 		});
+
 
 		if (resp.isErr()) {
 			const error = (
@@ -25,6 +28,9 @@ export const actions: Actions = {
 			).trim();
 			return invalid(401, { email, error });
 		}
+
+		console.log("logged response:", resp);
+		return;
 
 		const user = resp.value;
 

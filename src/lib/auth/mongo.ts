@@ -5,8 +5,39 @@ import db from "../../db/mongo";
 
 
 export const mongo: AuthAdapter = {
-	async login({ email, password }) {
-        return ok(0);
+	async login({ username, password, opts}) {
+		if (!opts?.cookies) return err(new Error("must pass cookies in to options"));
+		if (!username) return err(new Error("username is required"));
+		if (!password) return err(new Error("password is required"));
+
+		const users = db.collection("Users");
+		const res = await users.find({ username
+		}).toArray();
+		if (res.length === 0) {
+			return err(new Error("no user found"));
+		}
+		const user = res[0];
+		if (! await bcrypt.compare(password, user.password)) {
+			return err(new Error("incorrect password."));
+		}
+
+		// create session token
+		// add token into db
+		const session_id = make_session_id(16);
+		const hashedSessionId = await bcrypt.hash(session_id, 10);
+		const filter = { username: username };
+		const options = { upsert: true };
+		const updateDoc = { $set: { session_id: hashedSessionId } };
+
+		const result = await db.collection("Sessions").updateOne(filter, updateDoc, options);
+
+		opts.cookies.set("session_id", session_id, { path: "/" });
+
+
+		console.log(session_id);
+		console.log(hashedSessionId);
+
+        return ok(session_id);
 	},
 
 	async signup({ username, email, password, password_confirm }) {
@@ -79,14 +110,6 @@ export async function verify_username(username: string) : Promise<string> {
 	return "ok";
 }
 
-// async function put_user(
-// 	username: string,
-// 	email: string,
-// 	password: string
-// ): Promise<void> {
-//     return;
-// }
-
 async function put_user( username: string, email: string, password: string): Promise<void> {
 	const users = db.collection("Users");
 	try{
@@ -99,4 +122,16 @@ async function put_user( username: string, email: string, password: string): Pro
 	} catch (err) {
 		console.log(err);
 	}
+}
+
+function make_session_id(length: number): string {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
 }

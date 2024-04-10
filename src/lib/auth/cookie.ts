@@ -36,16 +36,16 @@ export const cookie: AuthAdapter = {
 
 		return ok(user);
 	},
-	async login({ email, password, opts }) {
+	async login({ username, password, opts }) {
 		// TODO: add Zod
 		if (!opts?.cookies)
 			return err(new Error("must pass cookies in to options"));
-		if (!email) return err(new Error("email is required"));
+		if (!username) return err(new Error("email is required"));
 		if (!password) return err(new Error("password is required"));
 
 		const users = get_users(opts.cookies);
 		const user = users.find(
-			(u) => u.email === email && u.password === password
+			(u) => u.username === username && u.password === password
 		);
 
 		if (!user) return err(new Error("no user found"));

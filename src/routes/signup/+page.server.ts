@@ -51,8 +51,6 @@ export const actions: Actions = {
 			opts: { cookies: event.cookies },
 		});
 
-		return;
-
 		if (signup_resp.isErr()) {
 			const error = (
 				String(signup_resp.error) ??
@@ -61,12 +59,18 @@ export const actions: Actions = {
 			return invalid(500, { email, error });
 		}
 
+		return;
+
 		// Sign the user in immediately
 		const login_resp = await mongo.login({
-			email,
+			username,
 			password,
 			opts: { cookies: event.cookies },
 		});
+
+		console.log("login response", login_resp);
+
+
 
 		if (login_resp.isErr()) {
 			const error = (
@@ -74,6 +78,9 @@ export const actions: Actions = {
 			).trim();
 			return invalid(500, { email, error });
 		}
+
+
+
 
 		const user = login_resp.value;
 		if (user?.id && user?.token) {
