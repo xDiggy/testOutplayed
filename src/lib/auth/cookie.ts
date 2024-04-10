@@ -20,21 +20,30 @@ const maxAge = one_day * 365;
 
 export const cookie: AuthAdapter = {
 	async validate_session({ token, opts }) {
-		const [_, session_token] = token.split(":");
+		// const [_, session_token] = token.split(":");
 
-		// TODO: add Zod
-		if (!opts?.cookies) throw new Error("must pass cookies in to options");
-		if (!token) return err(new Error("no token provided"));
+		// // TODO: add Zod
+		// if (!opts?.cookies) throw new Error("must pass cookies in to options");
+		// if (!token) return err(new Error("no token provided"));
 
-		const users = get_users(opts.cookies);
+		// const users = get_users(opts.cookies);
 
-		log("users:", users);
+		// log("users:", users);
 
-		const user = users.find((user: User) => user.token === session_token);
+		// const user = users.find((user: User) => user.token === session_token);
 
-		if (!user) return err(new Error("no user found"));
+		// if (!user) return err(new Error("no user found"));
 
-		return ok(user);
+		// return ok(user);
+
+		const [username, session_id] = token.split(":");
+		if (!opts?.cookies)
+			return err(new Error("must pass cookies in to options"));
+		if (!username || !session_id || !token)
+			return err(new Error("incorrect token provided"));
+		
+
+		return ok(0);
 	},
 	async login({ username, password, opts }) {
 		// TODO: add Zod

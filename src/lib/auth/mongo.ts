@@ -31,7 +31,7 @@ export const mongo: AuthAdapter = {
 
 		const result = await db.collection("Sessions").updateOne(filter, updateDoc, options);
 
-		opts.cookies.set("session_id", session_id, { path: "/" });
+		opts.cookies.set("session_id", `${username}:${session_id}`, { path: "/" });
 
 
 		console.log(session_id);

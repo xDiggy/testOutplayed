@@ -68,9 +68,6 @@ export const actions: Actions = {
 			opts: { cookies: event.cookies },
 		});
 
-		console.log("login response", login_resp);
-
-
 
 		if (login_resp.isErr()) {
 			const error = (

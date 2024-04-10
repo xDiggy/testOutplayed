@@ -30,24 +30,33 @@ export const actions: Actions = {
 		}
 
 		console.log("logged response:", resp);
+
+		// if (resp.isOk()) {
+		// 	const token = resp.value;
+		// 	event.cookies.set("auth_token", token, { path: "/", maxAge: AUTH_TOKEN_EXPIRY_SECONDS });
+		// 	delete resp.value;
+		// }
+
+	
+		// return {resp};
 		return;
 
-		const user = resp.value;
+		// const user = resp.value;
 
-		log("user:", user);
+		// log("user:", user);
 
-		if (user && user.token) {
-			// TODO: duplicated in login page
-			event.cookies.set("auth_token", `${user.id}:${user.token}`, {
-				path: "/",
-				maxAge: AUTH_TOKEN_EXPIRY_SECONDS,
-			});
-		}
+		// if (user && user.token) {
+		// 	// TODO: duplicated in login page
+		// 	event.cookies.set("auth_token", `${user.id}:${user.token}`, {
+		// 		path: "/",
+		// 		maxAge: AUTH_TOKEN_EXPIRY_SECONDS,
+		// 	});
+		// }
 
-		log("redirecting user...");
+		// log("redirecting user...");
 
-		delete user.token;
+		// delete user.token;
 
-		return { user };
+		// return { user };
 	},
 };
