@@ -35,8 +35,9 @@ export const cookie: AuthAdapter = {
 		// if (!user) return err(new Error("no user found"));
 
 		// return ok(user);
-
+		console.log("enetered validate_session with", token);
 		const [username, session_id] = token.split(":");
+		console.log("token:", username, session_id);
 		if (!opts?.cookies)
 			return err(new Error("must pass cookies in to options"));
 		if (!username || !session_id || !token)

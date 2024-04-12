@@ -12,7 +12,7 @@ const log = debug("app:hooks.server");
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// Grab the auth_token from the cookies for non-API request:
-	const cookie_token = event.cookies.get("auth_token") as string;
+	const cookie_token = event.cookies.get("session_id") as string;
 
 	// Grab the `Authorization: Bearer <token>` header for API requests:
 	const bearer_token = event.request.headers

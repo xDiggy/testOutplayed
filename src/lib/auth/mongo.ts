@@ -30,14 +30,14 @@ export const mongo: AuthAdapter = {
 		const updateDoc = { $set: { session_id: hashedSessionId } };
 
 		const result = await db.collection("Sessions").updateOne(filter, updateDoc, options);
+		const sessionCookie = `${username}:${session_id}`;
+		opts.cookies.set("session_id", sessionCookie, { path: "/" });
+		console.log("set session_id cookie: ", `${username}:${session_id}`);
 
-		opts.cookies.set("session_id", `${username}:${session_id}`, { path: "/" });
+		// console.log(session_id);
+		// console.log(hashedSessionId);
 
-
-		console.log(session_id);
-		console.log(hashedSessionId);
-
-        return ok(session_id);
+        return ok(sessionCookie);
 	},
 
 	async signup({ username, email, password, password_confirm }) {
