@@ -33,13 +33,15 @@ export const actions: Actions = {
 
 		// if (resp.isOk()) {
 		// 	const token = resp.value;
-		// 	event.cookies.set("auth_token", token, { path: "/", maxAge: AUTH_TOKEN_EXPIRY_SECONDS });
+		// 	// event.cookies.set("auth_token", token, { path: "/", maxAge: AUTH_TOKEN_EXPIRY_SECONDS });
 		// 	delete resp.value;
 		// }
 
+		// console.log("bullshit", event.cookies.get("session_id"));
+
 	
 		// return {resp};
-		return;
+		// return;
 
 		// const user = resp.value;
 
@@ -58,5 +60,9 @@ export const actions: Actions = {
 		// delete user.token;
 
 		// return { user };
+		const user = { token: "" };
+		user.token = resp.value;
+		console.log("user:", user);
+		return { user };
 	},
 };

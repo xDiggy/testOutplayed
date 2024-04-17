@@ -59,7 +59,7 @@ export const actions: Actions = {
 			return invalid(500, { email, error });
 		}
 
-		return;
+		// return;
 
 		// Sign the user in immediately
 		const login_resp = await mongo.login({
@@ -67,6 +67,12 @@ export const actions: Actions = {
 			password,
 			opts: { cookies: event.cookies },
 		});
+
+		console.log("login_resp:", login_resp);
+
+		// const myUser = { token: ""};
+		// console.log("sign up cookied: ", event.cookies.get("session_id"));
+		// return;
 
 
 		if (login_resp.isErr()) {
@@ -76,20 +82,21 @@ export const actions: Actions = {
 			return invalid(500, { email, error });
 		}
 
+		const user = { token: login_resp.value};
+		return user;
 
 
+		// const user = login_resp.value;
+		// if (user?.id && user?.token) {
+		// 	// TODO: duplicated in login page
+		// 	event.cookies.set("auth_token", `${user.id}:${user.token}`, {
+		// 		path: "/",
+		// 		maxAge: AUTH_TOKEN_EXPIRY_SECONDS,
+		// 	});
+		// }
 
-		const user = login_resp.value;
-		if (user?.id && user?.token) {
-			// TODO: duplicated in login page
-			event.cookies.set("auth_token", `${user.id}:${user.token}`, {
-				path: "/",
-				maxAge: AUTH_TOKEN_EXPIRY_SECONDS,
-			});
-		}
+		// delete user.token;
 
-		delete user.token;
-
-		return { user };
+		// return { user };
 	},
 };

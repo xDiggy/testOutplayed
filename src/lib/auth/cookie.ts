@@ -47,6 +47,7 @@ export const cookie: AuthAdapter = {
 		return ok(0);
 	},
 	async login({ username, password, opts }) {
+		console.log("entering cookie.ts");
 		// TODO: add Zod
 		if (!opts?.cookies)
 			return err(new Error("must pass cookies in to options"));
@@ -70,6 +71,7 @@ export const cookie: AuthAdapter = {
 			})
 		);
 
+		console.log("exiting cookie.ts");
 		return ok(user);
 	},
 

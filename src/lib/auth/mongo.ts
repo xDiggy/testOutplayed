@@ -6,6 +6,7 @@ import db from "../../db/mongo";
 
 export const mongo: AuthAdapter = {
 	async login({ username, password, opts}) {
+		console.log("entering login mongo.ts");
 		if (!opts?.cookies) return err(new Error("must pass cookies in to options"));
 		if (!username) return err(new Error("username is required"));
 		if (!password) return err(new Error("password is required"));
@@ -37,6 +38,7 @@ export const mongo: AuthAdapter = {
 		// console.log(session_id);
 		// console.log(hashedSessionId);
 
+		console.log("exiting login mongo.ts");
         return ok(sessionCookie);
 	},
 
